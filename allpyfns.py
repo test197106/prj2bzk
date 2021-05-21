@@ -6,14 +6,14 @@ from   pathlib import Path
 import pandas as pd
 
 # Defining functions in this module
-def fn_init(i_prjname,i_prjrole,i_prjhome):
+def fn_init(i_prjhome):
 # Initialize module
     print('Initializing AllPyfunctions module')
     global st_prjname
     global st_prjrole
     global po_prjhome
-    st_prjname=i_prjname
-    st_prjrole=i_prjrole
+    st_prjname='prj2bzk'
+    st_prjrole='dev'
     po_prjhome=Path(i_prjhome)
     #fn_setup()
     #fn_getsqlm('zzzz')
