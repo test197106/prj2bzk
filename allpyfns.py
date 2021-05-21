@@ -5,21 +5,22 @@
 from   pathlib import Path
 import pandas as pd
 
-# Defining functions in this module
-def fn_init(i_prjhome):
-# Initialize module
-    print('Initializing AllPyfunctions module')
+def fn_initvar(i_prjhome):
     global st_prjname
     global st_prjrole
     global po_prjhome
     st_prjname='prj2bzk'
     st_prjrole='dev'
-    po_prjhome=Path(i_prjhome)
-    #fn_setup()
-    #fn_getsqlm('zzzz')
-    #print(st_sqlm, end='')
-    #fn_getsqlc('zzzz')
-    #print(st_sqlc, end='')
+    po_prjhome=Path(i_prjhome)    
+# Defining functions in this module
+def fn_init(i_prjhome):
+# Initialize module
+    print('Initializing AllPyfunctions module')
+    fn_setup()
+    fn_getsqlm('zzzz')
+    print(st_sqlm, end='')
+    fn_getsqlc('zzzz')
+    print(st_sqlc, end='')
 def fn_setup():
 # Setup module
     global li_sqlm
