@@ -1,0 +1,11 @@
+{
+  '1s_valid': 'Y',
+ 'st_git_raw_url': None,
+ 'st_git_user': None,
+ 'st_proj_name': 'prj2bzk',
+ 'st_proj_role': 'dev',
+ 'st_proj_vers': '01',
+ 'st_code_top_dir': Path.home()/pycode,
+ 'st_data_top_dir': None,
+ 'st_zipfiles': [None]
+}
