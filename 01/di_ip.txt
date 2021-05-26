@@ -1,5 +1,5 @@
 {
-  '1s_valid': 'Y',
+ '1s_valid': 'Y',
  'st_git_raw_url': '',
  'st_git_user': '',
  'st_proj_name': 'prj2bzk',
