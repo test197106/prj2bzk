@@ -360,7 +360,8 @@ def fn_update_data():
 
 
 def fn_dnl_addl_mods():
-    li_1=[ 'allpyfns.py' ]
+    li_1= [ 'allpyfns.py', 'allspmsg.csv', 'allspmsg.txt',
+            'allsqcmd.csv', 'allsqcmd.sql' ]
     for f in li_1:
         g=di_u['st_git_raw_url'];
         u=di_u['st_git_user'];

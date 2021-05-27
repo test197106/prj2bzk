@@ -38,6 +38,46 @@ def fn_reload():
     x=importlib.reload(sys.modules['allpyfns'])
     y=str(x).replace('>','').replace("'","").split()[3]
     print('Reloaded functions from {}'.format(y))
+def fn_setup_sql_mesg():
+    global li_mesg
+    global df_mesg
+    global li_sqlc
+    global df_sqlc
+    a=Path(gv.di_s['st_code_dir_1']) 
+    fo_mt = a / 'allspmsg.txt'
+    fo_mc = a / 'allspmsg.csv'
+    fo_ct = a / 'allsqcmd.sql'
+    fo_cc = a / 'allsqcmd.csv'
+    with open(fo_mt, 'r') as f: li_mesg = f.readlines()
+    df_mesg = pd.read_csv(fo_mc)
+    df_mesg['sql_id'] = df_mesg['sql_id'].astype('string')
+    with open(fo_ct, 'r') as f: li_sqlc = f.readlines()
+    df_sqlc = pd.read_csv(fo_cc)
+    df_sqlc['sql_id'] = df_sqlc['sql_id'].astype('string')
+def fn_getmesg(i_sqlid):
+    global st_mesg
+    z=''
+    for x in df_mesg.index:
+        if df_mesg.iloc[x,0] == i_sqlid:
+            for y in range(df_mesg.iloc[x,1], df_mesg.iloc[x,2]):
+                z=z+li_mesg[y]
+    st_mesg=z
+def fn_getsqlc(i_sqlid):
+    global st_sqlc
+    z=''
+    for x in df_sqlc.index:
+        if df_sqlc.iloc[x,0] == i_sqlid:
+            for y in range(df_sqlc.iloc[x,1], df_sqlc.iloc[x,2]):
+                z=z+li_sqlc[y]
+    st_sqlc=z
+def get_sqlstr(i_sqlid):
+    global st_opval
+    z=''
+    for x in df_sqlc.index:
+        if df_sqlc.iloc[x,0] == i_sqlid:
+            for y in range(df_sqlc.iloc[x,1], df_sqlc.iloc[x,2]):
+                z=z+li_sqlc[y]
+    st_opval=z
 def fn_cr_sq3exe(i_4lr, i_exefname, i_exefile):
     ft_now=datetime.now()
     li_f=['p1s0', 0, 0, 1, i_4lr, 'sq3ex', i_exefname, 0, 0.0, True, ft_now, i_exefile ]
