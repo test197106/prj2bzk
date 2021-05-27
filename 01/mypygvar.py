@@ -19,7 +19,12 @@ def fn_get_user_par():
     e = '=================================================================================='
     print(e+'\nKeys & its values of dictionary : gv.di_u\n'+e)
     for x,y in sorted(di_u.items()):
-        print(" gv.di_u['"+x+"'] = '"+str(y)+"'")
+        t=type(y); m=" gv.di_u['"+x+"'] ="
+        if t == type(''): print(m+" '"+y+"'")
+        elif (t==type(1) or t==type(1.0) or t==type(True) or t==type(None)):
+            print(m+" "+str(y))
+        elif t == type(Path.home()): print(m+" Path('"+str(y)+"')")
+        else: print(m+" Unknown('"+str(y)+"')")
     print(e,end='\n\n')
 
 
@@ -28,7 +33,12 @@ def fn_get_settings():
     e = '=================================================================================='
     print(e+'\nKeys & its values of dictionary : gv.di_s\n'+e)
     for x,y in sorted(di_s.items()):
-        print(" gv.di_s['"+x+"'] = '"+str(y)+"'")
+        t=type(y); m=" gv.di_s['"+x+"'] ="
+        if t == type(''): print(m+" '"+y+"'")
+        elif (t==type(1) or t==type(1.0) or t==type(True) or t==type(None)):
+            print(m+" "+str(y))
+        elif t == type(Path.home()): print(m+" Path('"+str(y)+"')")
+        else: print(m+" Unknown('"+str(y)+"')")
     print(e,end='\n\n')
 
 
@@ -37,7 +47,12 @@ def fn_get_prog_par():
     e = '=================================================================================='
     print(e+'\nKeys & its values of dictionary : gv.di_p\n'+e)
     for x,y in sorted(di_p.items()):
-        print(" gv.di_p['"+x+"'] = '"+str(y)+"'")
+        t=type(y); m=" gv.di_p['"+x+"'] ="
+        if t == type(''): print(m+" '"+y+"'")
+        elif (t==type(1) or t==type(1.0) or t==type(True) or t==type(None)):
+            print(m+" "+str(y))
+        elif t == type(Path.home()): print(m+" Path('"+str(y)+"')")
+        else: print(m+" Unknown('"+str(y)+"')")
     print(e,end='\n\n')
 
 
@@ -62,20 +77,13 @@ def fn_get_vars():
     print(e,end='\n\n')
 
 
-def fn_takeover(h,b):
+def fn_takeover(h,k):
     # Taken over the control from previous function
     #print('Taken over!!',end='\n\n')
     fn_init_h(h)
-    c0=str(b);j=Path(h['st_data_top_dir'])/h['st_proj_name'];
-    k=j/h['st_proj_role'];d0=str(k);d1=str(j/'p1.BDI');
-    d2=str(j/'p2.ETL');d3=str(j/'p3.EDA');
-    d4=str(j/'p4.MDO');d5=str(j/'p5.MCU');
-    d6=str(j/'p6.MPL');d7=str(j/'p7.RQI');
-    if not j.exists(): j.mkdir(mode=0o700, parents=True, exist_ok=True)
-    if not k.exists(): k.mkdir(mode=0o700, parents=True, exist_ok=True)
-    fn_set_dirs(c0, d0, d1, d2, d3, d4, d5, d6, d7)
-    #fn_get_vars()
-    #fn_get_values()
+    c1=str(k)
+    fn_set_code_dirs(c1)
+    fn_dnl_addl_mods()
 
 
 def fn_reload():
@@ -99,32 +107,38 @@ def fn_init():
         x=type(di_u)
     except:
         di_u={}
-        di_u['1s_valid']        = 'Y'
-        di_u['st_code_top_dir'] = None
-        di_u['st_data_top_dir'] = None
-        di_u['st_proj_name']    = None
-        di_u['st_proj_role']    = None
-        di_u['st_git_user']     = None
-        di_u['st_git_raw_url']  = None
+        di_u[ '1s_valid'       ] = 'Y'
+        di_u[ 'st_git_raw_url' ] = None
+        di_u[ 'st_git_user'    ] = None
+        di_u[ 'st_proj_name'   ] = None
+        di_u[ 'st_proj_role'   ] = None
+        di_u[ 'st_proj_vers'   ] = None
+        di_u[ 'st_code_top_1'  ] = None
+        di_u[ 'st_data_top_1'  ] = None
+        di_u[ 'st_data_top_2'  ] = None
+        di_u[ 'st_data_top_3'  ] = None
+        di_u[ 'st_data_top_4'  ] = None
+        di_u[ 'st_data_top_5'  ] = None
+        di_u[ 'st_data_top_6'  ] = None
+        di_u[ 'st_data_top_7'  ] = None
     try:
         x=type(di_s)
     except:
         di_s={}
-        di_s['1s_valid']        = 'Y'
-        di_s['code_dir_0']     = None
-        di_s['data_dir_0']     = None
-        di_s['data_dir_1']     = None
-        di_s['data_dir_2']     = None
-        di_s['data_dir_3']     = None
-        di_s['data_dir_4']     = None
-        di_s['data_dir_5']     = None
-        di_s['data_dir_6']     = None
-        di_s['data_dir_7']     = None
+        di_s['1s_valid']         = 'Y'
+        di_s['st_code_dir_1']    = None
+        di_s['st_data_dir_1']    = None
+        di_s['st_data_dir_2']    = None
+        di_s['st_data_dir_3']    = None
+        di_s['st_data_dir_4']    = None
+        di_s['st_data_dir_5']    = None
+        di_s['st_data_dir_6']    = None
+        di_s['st_data_dir_7']    = None
     try:
         x=type(p)
     except:
         di_p={}
-        di_p['1s_valid']        = 'Y'
+        di_p['1s_valid']         = 'Y'
 
 
 def fn_init_h(di_name):
@@ -141,13 +155,28 @@ def fn_init_h(di_name):
             raise Exception("Only dictionary item can be given as input") 
     except:
         h={}
-        h['1s_valid']     = 'Y'
-        h['st_code_top_dir'] = None
-        h['st_data_top_dir'] = None
-        h['st_proj_name']    = None
-        h['st_proj_role']    = None
-        h['st_git_user']     = None
-        h['st_git_raw_url']  = None
+        h[ '1s_valid'       ] = 'Y'
+        h[ 'st_git_raw_url' ] = None
+        h[ 'st_git_user'    ] = None
+        h[ 'st_proj_name'   ] = None
+        h[ 'st_proj_role'   ] = None
+        h[ 'st_proj_vers'   ] = None
+        h[ 'st_code_top_1'  ] = None
+        h[ 'st_data_top_1'  ] = None
+        h[ 'st_data_top_2'  ] = None
+        h[ 'st_data_top_3'  ] = None
+        h[ 'st_data_top_4'  ] = None
+        h[ 'st_data_top_5'  ] = None
+        h[ 'st_data_top_6'  ] = None
+        h[ 'st_data_top_7'  ] = None
+    else:
+        h[ 'st_data_top_1'  ] = None
+        h[ 'st_data_top_2'  ] = None
+        h[ 'st_data_top_3'  ] = None
+        h[ 'st_data_top_4'  ] = None
+        h[ 'st_data_top_5'  ] = None
+        h[ 'st_data_top_6'  ] = None
+        h[ 'st_data_top_7'  ] = None
     try:
         x=type(di_u)
     except:
@@ -156,16 +185,15 @@ def fn_init_h(di_name):
         x=type(di_s)
     except:
         di_s={}
-        di_s['1s_valid']     = 'Y'
-        di_s['code_dir_0']  = None
-        di_s['data_dir_0']  = None
-        di_s['data_dir_1']  = None
-        di_s['data_dir_2']  = None
-        di_s['data_dir_3']  = None
-        di_s['data_dir_4']  = None
-        di_s['data_dir_5']  = None
-        di_s['data_dir_6']  = None
-        di_s['data_dir_7']  = None
+        di_s['1s_valid'  ]       = 'Y'
+        di_s['st_code_dir_1']    = None
+        di_s['st_data_dir_1']    = None
+        di_s['st_data_dir_2']    = None
+        di_s['st_data_dir_3']    = None
+        di_s['st_data_dir_4']    = None
+        di_s['st_data_dir_5']    = None
+        di_s['st_data_dir_6']    = None
+        di_s['st_data_dir_7']    = None
     try:
         x=type(di_p)
     except:
@@ -173,35 +201,17 @@ def fn_init_h(di_name):
         di_p['1s_valid']     = 'Y'
 
 
-def fn_set_dirs(c0, d0, d1, d2, d3, d4, d5, d6, d7):
-# Safely set all directories used in this project
+def fn_set_code_dirs(c1):
+# Safely set all code directories used in this project
     global di_s
     fn_init()
-    if di_s['code_dir_0'] == None: di_s['code_dir_0'] = c0
-    if di_s['data_dir_0'] == None: di_s['data_dir_0'] = d0
-    if di_s['data_dir_1'] == None: di_s['data_dir_1'] = d1
-    if di_s['data_dir_2'] == None: di_s['data_dir_2'] = d2
-    if di_s['data_dir_3'] == None: di_s['data_dir_3'] = d3
-    if di_s['data_dir_4'] == None: di_s['data_dir_4'] = d4
-    if di_s['data_dir_5'] == None: di_s['data_dir_5'] = d5
-    if di_s['data_dir_6'] == None: di_s['data_dir_6'] = d6
-    if di_s['data_dir_7'] == None: di_s['data_dir_7'] = d7
+    if di_s['st_code_dir_1'] == None: di_s['st_code_dir_1'] = c1
 
-
-def fn_renew_dirs(c0, d0, d1, d2, d3, d4, d5, d6, d7):
-# Forcefully set all directories used in this project
+def fn_renew_code_dirs(c1):
+# Forcefully set all code directories used in this project
     global di_s
     fn_init()
-    di_s['code_dir_0'] = c0
-    di_s['data_dir_0'] = d0
-    di_s['data_dir_1'] = d1
-    di_s['data_dir_2'] = d2
-    di_s['data_dir_3'] = d3
-    di_s['data_dir_4'] = d4
-    di_s['data_dir_5'] = d5
-    di_s['data_dir_6'] = d6
-    di_s['data_dir_7'] = d7
-
+    di_s['st_code_dir_1'] = c1
 
 def fn_set_data_dir (i_dirname, i_dirvalue):
 # Safely set a given directory used in this project
@@ -223,7 +233,7 @@ def fn_renew_data_dir (i_dirname, i_dirvalue):
 
 
 def fn_restore_dict(i_diname, i_fname, i_obj):
-    a=Path(di_s['data_dir_0'])/i_fname
+    a=Path(di_s['st_code_dir_1'])/i_fname
     p=re.compile('(?<!\\\\)\'')
     o_obj=i_obj
     if a.exists():
@@ -257,7 +267,7 @@ def fn_refresh_dict(i_diname, i_fname, i_obj):
 
 
 def fn_save_dict(i_diname, i_fname, i_obj):
-    a=Path(di_s['data_dir_0'])/i_fname
+    a=Path(di_s['st_code_dir_1'])/i_fname
     with open(a,'wt') as f:
         print(i_obj,file=f)
     print('Saved gv.{} dictionary'.format(i_diname))
@@ -302,4 +312,89 @@ def fn_save_all_di():
     fn_save_dict('di_s','gv_di_s.txt',di_s)
     fn_save_dict('di_s','gv_di_p.txt',di_p)
 
+
+def fn_upd_data_dirs():
+    global di_s
+    fn_init()
+    fli_1=[]
+    #fli_2=[ 'p0.NON','p1.BDI','p2.ETL','p3.EDA',
+    #        'p4.MDO','p5.MCU','p6.MPL','p7.RQI']
+    fli_2=[ 'p0','p1','p2','p3',
+            'p4','p5','p6','p7']
+    global di_s
+    fn_init()
+    n=di_u['st_proj_name']
+    r=di_u['st_proj_role']
+    v=di_u['st_proj_vers']
+    for x,y in di_u.items():
+        if x.startswith('st_data_top_'):
+            fli_1.append(y)
+    for x in sorted(set(fli_1)):
+        y=Path(x)
+        if not y.exists():
+            y.mkdir(mode=0o755, parents=True, exist_ok=True)
+            print('Created following directory\n{}'.format(x))
+    #for i in range(1,8):
+    #    x='st_data_top_'+str(i)
+    #    y=di_u[x]
+    #    a=Path(y)/n
+    #    if not a.exists(): a.mkdir(mode=0o755, parents=True, exist_ok=True)
+    for i in range(1,8):
+        x='st_data_top_'+str(i)
+        y='st_data_dir_'+str(i)
+        z=Path(di_u[x])/fli_2[i]
+        if not z.exists(): z.mkdir(mode=0o755, parents=True, exist_ok=True)
+        if di_s[y] == None: di_s[y]=str(z)
+
+
+def fn_update_data():
+    # Following entries can be modified by advanced users
+    # For normal users please leave the entries below to its default values
+    di_u['st_data_top_2'] = di_u['st_data_top_1']
+    di_u['st_data_top_3'] = di_u['st_data_top_1']
+    di_u['st_data_top_4'] = di_u['st_data_top_1']
+    di_u['st_data_top_5'] = di_u['st_data_top_1']
+    di_u['st_data_top_6'] = di_u['st_data_top_1']
+    di_u['st_data_top_7'] = di_u['st_data_top_1']
+    fn_upd_data_dirs()
+
+
+def fn_dnl_addl_mods():
+    li_1=[ 'allpyfns.py' ]
+    for f in li_1:
+        g=di_u['st_git_raw_url'];
+        u=di_u['st_git_user'];
+        n=di_u['st_proj_name'];
+        r=di_u['st_proj_role'];
+        v=di_u['st_proj_vers'];
+        k=di_s['st_code_dir_1']
+        x=k/f;
+        y=g+'/'+u+'/'+n+'/'+r+'/'+v+'/'+f
+        if not x.exists(): x.write_bytes(requests.get(y, allow_redirects=True).content)
+
+
+#def fn_set_data_dirs(c0, d0, d1, d2, d3, d4, d5, d6, d7):
+## Safely set all directories used in this project
+#    global di_s
+#    fn_init()
+#    if di_s['data_dir_1'] == None: di_s['data_dir_1'] = d1
+#    if di_s['data_dir_2'] == None: di_s['data_dir_2'] = d2
+#    if di_s['data_dir_3'] == None: di_s['data_dir_3'] = d3
+#    if di_s['data_dir_4'] == None: di_s['data_dir_4'] = d4
+#    if di_s['data_dir_5'] == None: di_s['data_dir_5'] = d5
+#    if di_s['data_dir_6'] == None: di_s['data_dir_6'] = d6
+#    if di_s['data_dir_7'] == None: di_s['data_dir_7'] = d7
+#
+#
+#def fn_renew_data_dirs(c0, d0, d1, d2, d3, d4, d5, d6, d7):
+## Forcefully set all directories used in this project
+#    global di_s
+#    fn_init()
+#    di_s['data_dir_1'] = d1
+#    di_s['data_dir_2'] = d2
+#    di_s['data_dir_3'] = d3
+#    di_s['data_dir_4'] = d4
+#    di_s['data_dir_5'] = d5
+#    di_s['data_dir_6'] = d6
+#    di_s['data_dir_7'] = d7
 
