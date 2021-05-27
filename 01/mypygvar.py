@@ -368,7 +368,7 @@ def fn_dnl_addl_mods():
         r=di_u['st_proj_role'];
         v=di_u['st_proj_vers'];
         k=di_s['st_code_dir_1']
-        x=k/f;
+        x=Path(k)/f;
         y=g+'/'+u+'/'+n+'/'+r+'/'+v+'/'+f
         if not x.exists(): x.write_bytes(requests.get(y, allow_redirects=True).content)
 
