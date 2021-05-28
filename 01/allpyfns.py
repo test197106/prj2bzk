@@ -18,19 +18,19 @@ import uuid
 import mypygvar as gv
 def fn_get_functions():
     e = '=================================================================================='
-    print(e+'\nFunctions of module: gv\n'+e)
+    print(e+'\nFunctions of module: ap\n'+e)
     for x in sorted(globals()):
         if x.startswith('fn_'):
-            print('gv.'+x)
+            print('ap.'+x)
     print(e,end='\n\n')
 def fn_get_vars():
     m = [ 'sys', 'Path', 'importlib' ]
     #m = [ 'requests', 'json', 're'  ]
     e = '=================================================================================='
-    print(e+'\nVariables of module: gv\n'+e)
+    print(e+'\nVariables of module: ap\n'+e)
     for x in sorted(globals()):
         if x not in m and not x.startswith('_') and not x.startswith('fn_'):
-            print('gv.'+x)
+            print('ap.'+x)
     print(e,end='\n\n')
 def fn_ping():
     print('I am alive!')
@@ -50,7 +50,7 @@ def fn_setup_sql_mesg():
     fo_cc = a / 'allsqcmd.csv'
     with open(fo_mt, 'r') as f: li_mesg = f.readlines()
     df_mesg = pd.read_csv(fo_mc)
-    df_mesg['sql_id'] = df_mesg['sql_id'].astype('string')
+    df_mesg['mesg_id'] = df_mesg['mesg_id'].astype('string')
     with open(fo_ct, 'r') as f: li_sqlc = f.readlines()
     df_sqlc = pd.read_csv(fo_cc)
     df_sqlc['sql_id'] = df_sqlc['sql_id'].astype('string')
@@ -286,6 +286,41 @@ def fn_imptbl_info(i_inc_di_dbs='Y'):
     if i_inc_di_dbs == 'Y':
         print('Contents of di_dbs')
         print(di_dbs)
+#fn_runsql(123,'O','I','L','exe0','inp0',1,'out0',1)
+def fn_runsql(i_sqlid, i_si='N', i_so='O', i_log='L',
+               i_exe='exe0', i_inp='inp0', i_im=1, i_out='out0', i_om=1):
+    m_1="Args: {} {} {} {} {} {} {} {} {}"
+    print(m_1.format(i_sqlid,i_si,i_so,i_log,i_exe,i_inp,i_im,i_out,i_om))
+    f_btime=datetime.now()
+    for x in df_files.iloc[np.where((df_files.e_type=='sq3ex')&(df_files.e_name==i_exe))].loc[:,'f_file']:
+        ff_exe=str(x)
+    for x in df_files.iloc[np.where((df_files.e_type=='sq3in')&(df_files.e_name==i_inp) 
+                                    & (df_files.t_id==i_im))].loc[:,'f_file']:
+        ff_inp=str(x)
+    for x in df_files.iloc[np.where((df_files.e_type=='sq3ou')&(df_files.e_name==i_out) 
+                                    & (df_files.t_id==i_om))].loc[:,'f_file']:
+        ff_out=str(x)
+    f_run = '"' + ff_exe + '" < "' + ff_inp + '"' + ' > "' + ff_out + '" 2>&1'
+    #print(f_run)
+    get_sqlstr(i_sqlid)
+    #print(st_opval)
+    f_det='SQL:' + str(i_sqlid)
+    z=st_opval.format(k=di_dbs)
+    with open(ff_inp, "w") as f:
+        f.write(z)
+    if i_si == 'I':
+        print(z)
+    #else:
+    #    print(f_det)
+    fi_btime=datetime.now()
+    f_rc = os.system(f_run)
+    #print(f_rc)
+    fi_etime=datetime.now()
+    if i_so == 'O':
+        with open(ff_out, 'r') as f:
+            print(f.read())
+    if i_log == 'L':
+        fn_log_event('fn_runsql', f_det, fi_btime, fi_etime, 'done', f_rc)
 def fn_p1s0_tasks():
     f_btime_o=datetime.now()
     global cf_events
@@ -525,7 +560,7 @@ def fn_install_p1s3e():
     fn_cc_df_events()
     fn_show_df_files('p1s0')
     # Creae the database for this phase
-    fn_create_sq3dbf('db0', 'p1', 's3')
+    fn_create_sq3dbf('p1s3', 'p1', 's3')
     fn_cc_df_files()
     fn_cc_df_events()
     fn_show_df_files('p1s3')
@@ -639,10 +674,36 @@ def fn_p1s3_tasks():
     # Create pipe p1s3 for receiving data
     fn_install_p1s3e()
     # Receive data from P1S2E to P1S3E
-    fn_rcvdata_p1s3e(122)
+    fn_rcvdata_p1s3e('tfru')
     # Check details of the data received
-    fn_chktank_p1s3e(131,132,133)
+    fn_chktank_p1s3e('tbyy', 'xeqf', 'ryqc')
     # Closing tasks for this phase
     f_etime_o=datetime.now()
     fn_log_event('fn_irc_p1s3e', '', f_btime_o, f_etime_o, 'Install, Receive and Check P1S3E', 0)
     fn_closing_event('p1s3')
+def fn_install_p1s4e():
+    fn_create_sq3dbf('p1s4', 'p1', 's4')
+    fn_cc_df_files()
+    fn_cc_df_events()
+    fn_show_df_files('p1s4')
+    fn_runsql('rf7c','N','O','L')
+def fn_rcvdata_p1s4e():
+    fn_runsql('trfc','N','O','L')
+def fn_chktank_p1s4e():
+    fn_runsql('pv7u','N','O','L')    
+def fn_p1s4_tasks():
+    # Opening tasks for this phase
+    f_btime_o=datetime.now()
+    fn_restart_df_files()
+    fn_show_df_files('p1s3')  
+    fn_create_di_dbs()
+    # Create pipe p1s4 for receiving data
+    fn_install_p1s4e()
+    # Receive data from P1S3E to P1S4E
+    fn_rcvdata_p1s4e()
+    # Check details of the data received
+    fn_chktank_p1s4e()
+    # Closing tasks for this phase
+    f_etime_o=datetime.now()
+    fn_log_event('fn_irc_p1s4e', '', f_btime_o, f_etime_o, 'Install, Receive and Check P1S4E', 0)
+    fn_closing_event('p1s4')
